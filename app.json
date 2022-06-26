@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "ex-firestore",
+    "slug": "ex-firestore",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "ex-firestore"
+}
