@@ -1,20 +1,33 @@
 import { View, Text,StyleSheet } from 'react-native'
 import React, { useState} from 'react'
 import { Input,Icon,Button } from "@rneui/base";
+import {guardar} from '../services/ProductSrv'
 
 export const ProductForm = () => {
     const [codigo,setCodigo]=useState();
     const [producto,setProducto]=useState();
+    const [categoria,setCategoria]=useState();
     const [precio,setPrecio]=useState();
 
 const save =()=>{
-    console.log('working button-save')
+    console.log('working button-save');
+    guardar({
+      codigo:codigo,
+      producto:producto,
+      //Categoria:categoria,
+      precio:parseFloat(precio)
+    })
+    clean();
 }
-
+const clean =()=>{
+  setCodigo(null);
+  setProducto(null);
+  setPrecio(null)
+}
   return (
     <View style={styles.container}>
       <Text style={{marginTop:40,fontWeight:'bold',fontSize:25,color:'#517fa4'}}>Ingresa tu producto </Text>
-        <Text>
+        <Text style={{marginBottom:30}}>
         <Icon
         name='shopping-bag'
         type='entypo'
@@ -38,6 +51,13 @@ const save =()=>{
       label='Producto'
       leftIcon={{ type: 'antdesign', name: 'shoppingcart' }}
       />
+         {/* <Input
+      placeholder='Ingresar categoria'
+      value={categoria}
+      onChangeText={setCategoria}
+      label='Categoria'
+      leftIcon={{ type: 'antdesign', name: 'shoppingcart' }}
+      /> */}
         <Input
       placeholder='Ingresar precio'
       value={precio}

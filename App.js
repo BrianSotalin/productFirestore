@@ -13,8 +13,18 @@ export default function App() {
   cargarConfig();
   return (
   <NavigationContainer>
-   <Stack.Navigator>
-    <Stack.Screen name='ProductFormNav' component={ProductForm}></Stack.Screen>
+   <Stack.Navigator 
+   screenOptions={{
+    headerStyle: {
+      backgroundColor: '#517fa4',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: '300',
+    },
+  }}
+   >
+    <Stack.Screen name='ProductFormNav' component={ProductForm}  options={{ title: 'Registro de productos' }}></Stack.Screen>
    </Stack.Navigator>
   </NavigationContainer>
   );
