@@ -1,6 +1,6 @@
 import { View, Text,StyleSheet } from 'react-native'
 import React, { useState} from 'react'
-import { Input,Icon,Button } from "@rneui/base";
+import { Input,Icon,Button, color } from "@rneui/base";
 import {guardar} from '../services/ProductSrv'
 
 export const ProductForm = () => {
@@ -33,13 +33,15 @@ const clean =()=>{
         type='entypo'
         color='#517fa4'
         size={50}
-      /></Text>
+      />
+      </Text>
 
        <Input
       placeholder='Codigo del producto'
       value={codigo}
       onChangeText={setCodigo}
       label='Codigo'
+      labelStyle={{color:'#517fa4',fontWeight:'300'}}
       keyboardType='numeric'
       leftIcon={{ type: 'antdesign', name: 'barcode' }}
       
@@ -49,6 +51,7 @@ const clean =()=>{
       value={producto}
       onChangeText={setProducto}
       label='Producto'
+      labelStyle={{color:'#517fa4',fontWeight:'300'}}
       leftIcon={{ type: 'antdesign', name: 'shoppingcart' }}
       />
          {/* <Input
@@ -63,6 +66,7 @@ const clean =()=>{
       value={precio}
       onChangeText={setPrecio}
       label='Precio'
+      labelStyle={{color:'#517fa4',fontWeight:'300'}}
       keyboardType='numeric'
       leftIcon={{ type: 'entypo', name: 'price-tag' }}
       /> 
