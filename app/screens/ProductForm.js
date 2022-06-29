@@ -2,6 +2,7 @@ import { View, Text,StyleSheet } from 'react-native'
 import React, { useState} from 'react'
 import { Input,Icon,Button, color } from "@rneui/base";
 import {guardar} from '../services/ProductSrv'
+import {doc,getDoc} from 'firebase/firestore';
 
 export const ProductForm = ({navigation}) => {
     const [codigo,setCodigo]=useState();
@@ -14,26 +15,35 @@ export const ProductForm = ({navigation}) => {
     const [errorPrecio,setErrorPrecio]=useState();
     let hasError =false;
 
-const save =()=>{
+const save = async ()=>{
     console.log('working button-save');
-
     validacion();
-    if(!hasError){
-      guardar({
-        codigo:codigo,
-        producto:producto,
-        categoria:categoria,
-        precio:parseFloat(precio)
-      })
-      clean();
-      navigation.goBack();
+    const refUser=doc(global.dbCon,'Productos',codigo);
+    const userSnap=await getDoc(refUser);
+    if(userSnap.exists()){
+      console.log('Producto: ',userSnap.data())
+      setErrorCodigo('Codigo ya registrado')
+      hasError=true;
+    }else{
+      console.log('producto nuevo');
+      if(!hasError){
+        guardar({
+          codigo:codigo,
+          producto:producto,
+          categoria:categoria,
+          precio:parseFloat(precio)
+        })
+        clean();
+        navigation.goBack();
+      }
     }
-
+    
   
 }
-const validacion=()=>{
+const validacion= ()=>{
+
   if(codigo==null || codigo=="" ){
-    setErrorCodigo('Debe llenar todos los campos');
+    setErrorCodigo('Debe ingresar un codigo');
     hasError=true;
   }
   if(producto==null || producto=="" ){
@@ -49,12 +59,17 @@ const validacion=()=>{
     setErrorPrecio('Debe ingresar un precio valido');
     hasError=true;
   }
+
 }
 const clean =()=>{
   setCodigo(null);
   setProducto(null);
   setCategoria(null);
-  setPrecio(null)
+  setPrecio(null);
+  // setErrorCodigo(null);
+  // setErrorProducto(null);
+  // setErrorCategoria(null);
+  // setErrorPrecio(null);
 }
   return (
     <View style={styles.container}>
@@ -114,6 +129,7 @@ const clean =()=>{
         GUARDAR
         <Icon  name='save' type='feather' color='white' />
       </Button>
+      {/* <Button title={'aa'} onPress={validateCodigo}/> */}
       
     </View>
   )

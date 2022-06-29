@@ -1,5 +1,3 @@
-
-import { async } from '@firebase/util';
 import {doc,setDoc,collection,getDocs} from 'firebase/firestore';
 
 export const guardar=(producto)=>{
@@ -17,8 +15,3 @@ export const consulta = async (fnSetProducts) => {
 
   fnSetProducts(arrayProducts);
 }
-// export const validateCodigo = async()=>{
-//   const productRef=collection(global.dbCon,'Productos');
-//   const productSnap= await getDocs(productRef);
-//   console.log('probando',productSnap.forEach())
-// }
