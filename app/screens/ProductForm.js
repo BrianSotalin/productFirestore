@@ -3,31 +3,63 @@ import React, { useState} from 'react'
 import { Input,Icon,Button, color } from "@rneui/base";
 import {guardar} from '../services/ProductSrv'
 
-export const ProductForm = () => {
+export const ProductForm = ({navigation}) => {
     const [codigo,setCodigo]=useState();
     const [producto,setProducto]=useState();
     const [categoria,setCategoria]=useState();
     const [precio,setPrecio]=useState();
+    const [errorCodigo,setErrorCodigo]=useState();
+    const [errorProducto,setErrorProducto]=useState();
+    const [errorCategoria,setErrorCategoria]=useState();
+    const [errorPrecio,setErrorPrecio]=useState();
+    let hasError =false;
 
 const save =()=>{
     console.log('working button-save');
-    guardar({
-      codigo:codigo,
-      producto:producto,
-      //Categoria:categoria,
-      precio:parseFloat(precio)
-    })
-    clean();
+
+    validacion();
+    if(!hasError){
+      guardar({
+        codigo:codigo,
+        producto:producto,
+        categoria:categoria,
+        precio:parseFloat(precio)
+      })
+      clean();
+      navigation.goBack();
+    }
+
+  
+}
+const validacion=()=>{
+  if(codigo==null || codigo=="" ){
+    setErrorCodigo('Debe llenar todos los campos');
+    hasError=true;
+  }
+  if(producto==null || producto=="" ){
+    setErrorProducto('Debe ingresar un producto');
+    hasError=true;
+  }
+  if(categoria==null || categoria=="" ){
+    setErrorCategoria('Debe ingresar una categoria');
+    hasError=true;
+  }
+  let precioFloat =parseFloat(precio)
+  if(precioFloat==null || isNaN(precioFloat) || precioFloat<0 ){
+    setErrorPrecio('Debe ingresar un precio valido');
+    hasError=true;
+  }
 }
 const clean =()=>{
   setCodigo(null);
   setProducto(null);
+  setCategoria(null);
   setPrecio(null)
 }
   return (
     <View style={styles.container}>
-      <Text style={{marginTop:40,fontWeight:'bold',fontSize:25,color:'#517fa4'}}>Ingresa tu producto </Text>
-        <Text style={{marginBottom:30}}>
+      <Text style={{marginTop:10,fontWeight:'bold',fontSize:25,color:'#517fa4'}}>Ingresa tu producto </Text>
+        <Text style={{marginBottom:10}}>
         <Icon
         name='shopping-bag'
         type='entypo'
@@ -44,7 +76,7 @@ const clean =()=>{
       labelStyle={{color:'#517fa4',fontWeight:'300'}}
       keyboardType='numeric'
       leftIcon={{ type: 'antdesign', name: 'barcode' }}
-      
+      errorMessage={errorCodigo}
       />
         <Input
       placeholder='Ingresar producto'
@@ -53,14 +85,17 @@ const clean =()=>{
       label='Producto'
       labelStyle={{color:'#517fa4',fontWeight:'300'}}
       leftIcon={{ type: 'antdesign', name: 'shoppingcart' }}
+      errorMessage={errorProducto}
       />
-         {/* <Input
+         <Input
       placeholder='Ingresar categoria'
       value={categoria}
       onChangeText={setCategoria}
       label='Categoria'
-      leftIcon={{ type: 'antdesign', name: 'shoppingcart' }}
-      /> */}
+      labelStyle={{color:'#517fa4',fontWeight:'300'}}
+      leftIcon={{ type: 'material-community', name: 'format-list-group' }}
+      errorMessage={errorCategoria}
+      />
         <Input
       placeholder='Ingresar precio'
       value={precio}
@@ -69,13 +104,14 @@ const clean =()=>{
       labelStyle={{color:'#517fa4',fontWeight:'300'}}
       keyboardType='numeric'
       leftIcon={{ type: 'entypo', name: 'price-tag' }}
+      errorMessage={errorPrecio}
       /> 
           <Button
-      color='#517fa4'
+      color='#37B59B'
       onPress={save}
-      buttonStyle={{width:120,marginHorizontal:20,paddingVertical:10,justifyContent:'space-evenly',borderRadius:15}}
+      buttonStyle={{width:300,marginHorizontal:40,paddingHorizontal:80,paddingVertical:10,justifyContent:'space-evenly',borderRadius:15}}
       >
-        Guardar 
+        GUARDAR
         <Icon  name='save' type='feather' color='white' />
       </Button>
       

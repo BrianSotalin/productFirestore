@@ -1,19 +1,46 @@
 import { View, Text,FlatList,StyleSheet } from 'react-native'
 import React from 'react'
-import { Input,Icon,Button, color,ListItem } from "@rneui/base";
-import {consulta} from '../services/ProductSrv'
+import { Input,Icon,Button, color,ListItem,FAB,Avatar } from "@rneui/base";
+import {consulta,validateCodigo} from '../services/ProductSrv'
 import { useState } from 'react';
 
- export const ListaProduct = () => {
+ export const ListaProduct = ({navigation}) => {
     const [productos,setProductos]=useState();
     const recovery=()=>{
         console.log('recuperando datos');
         consulta(setProductos);
+       // validateCodigo();
+        console.log('ddd',global.dbCon,'Productos');
     }
     const ItemLista=({producto})=>{
         return <ListItem bottomDivider>
+           <Avatar
+    title={producto.codigo}
+    titleStyle={{color:'#37B5FF'}}
+    //containerStyle={{ backgroundColor: '#012C44' }}
+    containerStyle={{
+      borderColor: '#37B5FF',
+      borderStyle: 'solid',
+      borderWidth: 1,
+      color:'red'
+    }}
+    rounded
+    />
         <ListItem.Content>
-      <ListItem.Title><Text style={{color:'#517fa4',fontWeight:'bold'}}>{producto.codigo}{producto.producto}{producto.precio}</Text></ListItem.Title>
+      <ListItem.Title>
+        <Text style={{color:'#517fa4',fontWeight:'bold'}}>{producto.producto}</Text>
+        </ListItem.Title>
+        <ListItem.Title>
+        <Text style={{color:'orange',fontWeight:'400'}}>{producto.precio} $</Text>
+        </ListItem.Title>
+    </ListItem.Content>
+    <ListItem.Content>
+        <ListItem.Title>
+        <Text style={{fontWeight:'300',color:'#517fa4'}}>
+          <Text style={{color:'brown'}}>Categoria: </Text>
+          {producto.categoria}
+          </Text>
+        </ListItem.Title>
     </ListItem.Content>
         </ListItem>
        
@@ -45,6 +72,12 @@ import { useState } from 'react';
       }}
       keyExtractor={(item) => {return item.codigo}}
       />
+       <FAB
+      icon={{ name: 'add', color: 'white' }}
+      color='#37B59B'
+      placement='right'
+      onPress={()=>{navigation.navigate('ProductFormNav')}}
+      />
      
     </View>
   )
@@ -56,6 +89,8 @@ const styles =StyleSheet.create({
         flex: 1, 
         color:'#012C44',
         alignItems:'stretch',
-        justifyContent:'center'
+        justifyContent:'center',
+        //backgroundColor:'#D7F7FF'
+        backgroundColor:'#E4F9FE'
     }
 });
