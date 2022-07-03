@@ -5,16 +5,43 @@ import{cargarConfig} from './app/utils/FirebaseConfig';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {ProductForm} from './app/screens/ProductForm';
-import {ListaProduct} from './app/screens/ListaProduct'
+import {ListaProduct} from './app/screens/ListaProduct';
+import {LoginForm} from './app/screens/Login';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Stack = createNativeStackNavigator();
+const LoginStack = createNativeStackNavigator();
 
+const registrarObserver = ()=>{
+const auth = getAuth();
+if(!global.CierreObserver){
+  global.CierreObserver=onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      console.log('Estado: SIGN IN')
+      // ...
+    } else {
+      // User is signed out
+      console.log('Estado: SING OUT')
+      // ...
+    }
+  });
+}
 
-export default function App() {
-  cargarConfig();
+}
+
+const LoginNav = () =>{
   return (
-  <NavigationContainer>
-   <Stack.Navigator 
+    <LoginStack.Navigator>
+    <LoginStack.Screen name='LoginFormNav' component={LoginForm}></LoginStack.Screen>
+  </LoginStack.Navigator>
+  );
+}
+const ProductNav = ()=>{
+  return(
+<Stack.Navigator 
    screenOptions={{
     headerStyle: {
       backgroundColor: '#517fa4',
@@ -28,6 +55,16 @@ export default function App() {
     <Stack.Screen name='ListaFormNav' component={ListaProduct}  options={{ title: 'Listado de productos' }}></Stack.Screen>
     <Stack.Screen name='ProductFormNav' component={ProductForm}  options={{ title: 'Registro de productos' }}></Stack.Screen>
    </Stack.Navigator>
+  );
+}
+
+export default function App() {
+  cargarConfig();
+  registrarObserver();
+  return (
+  <NavigationContainer>
+    <LoginNav/>
+   {/* <ProductNav/> */}
   </NavigationContainer>
   );
 }

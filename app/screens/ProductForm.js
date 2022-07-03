@@ -4,7 +4,7 @@ import { Input,Icon,Button, color } from "@rneui/base";
 import {guardar} from '../services/ProductSrv'
 import {doc,getDoc} from 'firebase/firestore';
 
-export const ProductForm = ({navigation}) => {
+export const ProductForm = ({navigation,route}) => {
     const [codigo,setCodigo]=useState();
     const [producto,setProducto]=useState();
     const [categoria,setCategoria]=useState();
@@ -17,6 +17,7 @@ export const ProductForm = ({navigation}) => {
 
 const save = async ()=>{
     console.log('working button-save');
+    refreshError();
     validacion();
     const refUser=doc(global.dbCon,'Productos',codigo);
     const userSnap=await getDoc(refUser);
@@ -35,6 +36,10 @@ const save = async ()=>{
         })
         clean();
         navigation.goBack();
+        if(route.params && route.params.fnRepintarLista){
+          route.params.fnRepintarLista();
+        }
+       
       }
     }
     
@@ -66,10 +71,12 @@ const clean =()=>{
   setProducto(null);
   setCategoria(null);
   setPrecio(null);
-  // setErrorCodigo(null);
-  // setErrorProducto(null);
-  // setErrorCategoria(null);
-  // setErrorPrecio(null);
+}
+const refreshError=()=>{
+  setErrorCodigo(null);
+  setErrorProducto(null);
+  setErrorCategoria(null);
+  setErrorPrecio(null);
 }
   return (
     <View style={styles.container}>

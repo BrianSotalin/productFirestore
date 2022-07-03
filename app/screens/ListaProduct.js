@@ -2,15 +2,18 @@ import { View, Text,FlatList,StyleSheet } from 'react-native'
 import React from 'react'
 import { Input,Icon,Button, color,ListItem,FAB,Avatar } from "@rneui/base";
 import {consulta,validateCodigo} from '../services/ProductSrv'
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
  export const ListaProduct = ({navigation}) => {
     const [productos,setProductos]=useState();
+    useEffect(()=>{
+     recovery();
+     console.log('probano USEEFECT')
+    },[])
     const recovery=()=>{
         console.log('recuperando datos');
         consulta(setProductos);
        // validateCodigo();
-        console.log('ddd',global.dbCon,'Productos');
     }
     const ItemLista=({producto})=>{
         return <ListItem bottomDivider>
@@ -53,18 +56,15 @@ import { useState } from 'react';
         </View>
         <View style={{justifyContent:'center',alignItems:'center'}}>
        
-        <Button
+        {/* <Button
       color='#37B5FF'
       onPress={recovery}
       buttonStyle={{width:'60%',marginVertical:20,paddingVertical:10,justifyContent:'space-evenly',borderRadius:15}}
       >
         Recuperar datos
         <Icon  name='reload1' type='antdesign' color='white' />
-      </Button>
+      </Button> */}
         </View>
-    
-    
-      
       <FlatList
       data={productos}
       renderItem={({item})=>{
@@ -76,7 +76,7 @@ import { useState } from 'react';
       icon={{ name: 'add', color: 'white' }}
       color='#37B59B'
       placement='right'
-      onPress={()=>{navigation.navigate('ProductFormNav')}}
+      onPress={()=>{navigation.navigate('ProductFormNav',{fnRepintarLista:recovery})}}
       />
      
     </View>
