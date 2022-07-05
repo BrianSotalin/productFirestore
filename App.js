@@ -35,7 +35,7 @@ if(!global.CierreObserver){
 const LoginNav = () =>{
   return (
     <LoginStack.Navigator>
-    <LoginStack.Screen name='LoginFormNav' component={LoginForm}></LoginStack.Screen>
+    <LoginStack.Screen name='LoginFormNav' component={LoginForm} options={{headerShown:false}}></LoginStack.Screen>
   </LoginStack.Navigator>
   );
 }
@@ -63,8 +63,8 @@ export default function App() {
   registrarObserver();
   return (
   <NavigationContainer>
-    <LoginNav/>
-   {/* <ProductNav/> */}
+    {/* <LoginNav/> */}
+   <ProductNav/>
   </NavigationContainer>
   );
 }

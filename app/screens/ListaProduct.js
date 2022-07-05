@@ -1,11 +1,12 @@
-import { View, Text,FlatList,StyleSheet } from 'react-native'
+import { View, Text,FlatList,StyleSheet,TouchableHighlight } from 'react-native'
 import React from 'react'
 import { Input,Icon,Button, color,ListItem,FAB,Avatar } from "@rneui/base";
-import {consulta,validateCodigo} from '../services/ProductSrv'
+import {consulta} from '../services/ProductSrv'
 import { useState,useEffect } from 'react';
 
  export const ListaProduct = ({navigation}) => {
     const [productos,setProductos]=useState();
+    const [refreshing,setRefreshing]=useState(false)
     useEffect(()=>{
      recovery();
      console.log('probano USEEFECT')
@@ -16,7 +17,8 @@ import { useState,useEffect } from 'react';
        // validateCodigo();
     }
     const ItemLista=({producto})=>{
-        return <ListItem bottomDivider>
+        return <TouchableHighlight onPress={()=>{navigation.navigate('ProductFormNav',{product:producto})}}>
+ <ListItem bottomDivider>
            <Avatar
     title={producto.codigo}
     titleStyle={{color:'#37B5FF'}}
@@ -24,8 +26,7 @@ import { useState,useEffect } from 'react';
     containerStyle={{
       borderColor: '#37B5FF',
       borderStyle: 'solid',
-      borderWidth: 1,
-      color:'red'
+      borderWidth: 1
     }}
     rounded
     />
@@ -45,7 +46,9 @@ import { useState,useEffect } from 'react';
           </Text>
         </ListItem.Title>
     </ListItem.Content>
+    <ListItem.Chevron color={'#37B5FF'}/>
         </ListItem>
+        </TouchableHighlight>
        
     }
   return (
@@ -56,14 +59,7 @@ import { useState,useEffect } from 'react';
         </View>
         <View style={{justifyContent:'center',alignItems:'center'}}>
        
-        {/* <Button
-      color='#37B5FF'
-      onPress={recovery}
-      buttonStyle={{width:'60%',marginVertical:20,paddingVertical:10,justifyContent:'space-evenly',borderRadius:15}}
-      >
-        Recuperar datos
-        <Icon  name='reload1' type='antdesign' color='white' />
-      </Button> */}
+  
         </View>
       <FlatList
       data={productos}
@@ -71,6 +67,13 @@ import { useState,useEffect } from 'react';
         return  <ItemLista producto={item}/>
       }}
       keyExtractor={(item) => {return item.codigo}}
+      showsVerticalScrollIndicator={true}
+      refreshing={refreshing}
+      onRefresh={async()=>{
+        setRefreshing(true);
+        await recovery();
+        setRefreshing(false)
+     } }
       />
        <FAB
       icon={{ name: 'add', color: 'white' }}

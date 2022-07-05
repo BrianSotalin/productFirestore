@@ -15,3 +15,4 @@ export const consulta = async (fnSetProducts) => {
 
   fnSetProducts(arrayProducts);
 }
+
