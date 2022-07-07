@@ -1,16 +1,32 @@
 import { View, Text,StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import { Input,Icon,Button, color } from "@rneui/base";
-import {ingreso,cerrarSesion} from '../services/AutenticacionSrv'
+import {ingreso} from '../services/AutenticacionSrv'
+
 
 export const LoginForm = () => {
     const [email,setEmail]=useState(null);
     const [clave,setClave]=useState(null);
+    const [errorUser,setErrorUser]=useState();
+    const [errorPsswd,setErrorPsswd]=useState();
 
     const validarLogin=()=>{
+      validacion();
         console.log('validando....');
         ingreso(email,clave);
         console.log('Ususario: ',email)
+    }
+    const validacion =()=>{
+      if(email==null){
+        setErrorUser('Debe ingresar un email')
+      }else{
+        setErrorUser('Email y/o clave incorrecta')
+      }
+      if(clave==null){
+        setErrorPsswd('Debe ingresar una clave')
+      }else{
+        setErrorPsswd('Email y/o clave incorrecta')
+      }
     }
   return (
     <View style={styles.container}>
@@ -28,6 +44,7 @@ export const LoginForm = () => {
       label='Email'
       labelStyle={{color:'#517fa4',fontWeight:'300'}}
       leftIcon={{ type: 'fontisto', name: 'email' ,color:'#517fa4'}}
+      errorMessage={errorUser}
       />
         <Input
       placeholder='Ingrese una contraseña'
@@ -36,6 +53,7 @@ export const LoginForm = () => {
       label='Contraseña'
       labelStyle={{color:'#517fa4',fontWeight:'300'}}
       leftIcon={{ type: 'material-community', name: 'onepassword',color:'#517fa4' }}
+      errorMessage={errorPsswd}
       />
             <Button
       color='white'
