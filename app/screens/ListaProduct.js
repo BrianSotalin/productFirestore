@@ -1,8 +1,9 @@
 import { View, Text,FlatList,StyleSheet,TouchableHighlight } from 'react-native'
 import React from 'react'
-import { Input,Icon,Button, color,ListItem,FAB,Avatar } from "@rneui/base";
+import { Input,Icon,Button,ListItem,FAB,Avatar } from "@rneui/base";
 import {consulta} from '../services/ProductSrv'
 import { useState,useEffect } from 'react';
+import {cerrarSesion} from '../services/AutenticacionSrv'
 
  export const ListaProduct = ({navigation}) => {
     const [productos,setProductos]=useState();
@@ -53,13 +54,24 @@ import { useState,useEffect } from 'react';
     }
   return (
     <View style={styles.container}>
+
         <View style={{justifyContent:'center',alignItems:'center',marginVertical:10}}>
+        <Button
+      //color='#37B59B'
+      color='crimson'
+      type='outline'
+      onPress={cerrarSesion}
+      buttonStyle={{width:300,marginHorizontal:40,paddingHorizontal:80,
+        paddingVertical:0,justifyContent:'space-evenly',borderRadius:15,borderColor:'crimson'}}
+        titleStyle={{color:'crimson'}}
+      >
+        Cerrar sesion
+        <Icon  name='transit-enterexit' type='material' color='crimson' />
+      </Button>
+
         <Icon  name='shop' type='entypo' color='#37B59B' size={100}/>
+        
         <Text style={{color:'#37B59B' ,fontSize:30,fontWeight:'100'}}>S O T A SHOP</Text>
-        </View>
-        <View style={{justifyContent:'center',alignItems:'center'}}>
-       
-  
         </View>
       <FlatList
       data={productos}

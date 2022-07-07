@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import{cargarConfig} from './app/utils/FirebaseConfig';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,26 +11,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const Stack = createNativeStackNavigator();
 const LoginStack = createNativeStackNavigator();
-
-const registrarObserver = ()=>{
-const auth = getAuth();
-if(!global.CierreObserver){
-  global.CierreObserver=onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      console.log('Estado: SIGN IN')
-      // ...
-    } else {
-      // User is signed out
-      console.log('Estado: SING OUT')
-      // ...
-    }
-  });
-}
-
-}
 
 const LoginNav = () =>{
   return (
@@ -59,12 +39,33 @@ const ProductNav = ()=>{
 }
 
 export default function App() {
+  const [login,setLogin]=useState(false);
   cargarConfig();
+  const registrarObserver = ()=>{
+    const auth = getAuth();
+    if(!global.CierreObserver){
+      global.CierreObserver=onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          const uid = user.uid;
+          console.log('Estado: SIGN IN')
+          setLogin(true);
+          // ...
+        } else {
+          // User is signed out
+          console.log('Estado: SING OUT')
+          setLogin(false);
+          // ...
+        }
+      });
+    }
+    
+    }
   registrarObserver();
   return (
   <NavigationContainer>
-    {/* <LoginNav/> */}
-   <ProductNav/>
+    {login?<ProductNav/>:<LoginNav/>}
   </NavigationContainer>
   );
 }

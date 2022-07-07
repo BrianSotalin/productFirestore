@@ -48,18 +48,7 @@ export const LoginForm = () => {
         Login
         <Icon  name='login' type='antdesign' color='#37B59B' />
       </Button>
-      <Button
-      //color='#37B59B'
-      color='white'
-      type='outline'
-      onPress={cerrarSesion}
-      buttonStyle={{width:300,marginHorizontal:40,paddingHorizontal:80,
-        paddingVertical:10,justifyContent:'space-evenly',borderRadius:15,borderColor:'crimson'}}
-        titleStyle={{color:'crimson'}}
-      >
-        Sign Out
-        <Icon  name='transit-enterexit' type='material' color='crimson' />
-      </Button>
+   
     </View>
   )
 }
